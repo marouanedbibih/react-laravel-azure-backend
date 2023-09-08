@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator as ValidationValidator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 
 class StoreUserRequest extends FormRequest
 {
@@ -11,7 +15,7 @@ class StoreUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +26,23 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'password' => [
+                'required',
+                Password::min(8)
+                    ->letters()
+                    ->symbols()
+                    ->numbers()
+            ]
         ];
+    }
+
+    protected function failedValidation(ValidationValidator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'message' => 'validation error',
+            'errors' => $validator->errors()
+        ], 422));
     }
 }

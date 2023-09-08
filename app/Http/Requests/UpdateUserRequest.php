@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -11,7 +15,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +25,33 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(): array
     {
+        $userId = $this->route('user');
         return [
-            //
+            'name' => 'required|string|max:255',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users')->ignore($userId),
+            ],
+            'password' => [
+                'nullable', // Make password field nullable
+                'string',
+                'confirmed',
+                Password::min(8)
+                    ->letters()
+                    ->numbers()
+                    ->symbols()
+            ],
+
         ];
     }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'message' => 'validation error',
+            'errors' => $validator->errors()
+        ], 422));
+    }
+
 }
