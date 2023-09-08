@@ -2,47 +2,54 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\SignupRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function signup(SignupRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        /** @var \App\Models\User $user */
+        $user = User::create($data);
+        $token = $user->createToken('ACCESS_TOKEN')->plainTextToken;
+        return response([
+            'message' => 'User add sucufuly',
+            'user' => $user,
+            'token' => $token
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function login(LoginRequest $request)
     {
-        //
-    }
+        $credentials = $request->validated();
+        if (!Auth::attempt($credentials)) {
+            return response([
+                'message' => 'Provide email and password not incorrect'
+            ], 422);
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        /** @var \App\Models\User */
+        $user = Auth::user();
+        $token = $user->createToken('ACCESS_TOKEN')->plainTextToken;
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+        return response([
+            'message' => 'Your are login sucufuly',
+            'user' => $user,
+            'token' => $token
+        ]);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function logout(Request $request)
     {
-        //
+        /** @var \App\Models\User $user */
+        $user = $request->user();
+        $user->currentAccessToken()->delete();
+        return response([
+            'message' => 'Your are logout',
+        ], 204);
     }
 }
