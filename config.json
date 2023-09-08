@@ -1,0 +1,73 @@
+[
+    {
+      "name": "APP_NAME",
+      "value": "API React Laravel Azure Project",
+      "slotSetting": false
+    },
+    {
+      "name": "APP_ENV",
+      "value": "Production",
+      "slotSetting": false
+    },
+    {
+      "name": "APP_KEY",
+      "value": "TODO",
+      "slotSetting": false
+    },
+    {
+      "name": "APP_DEBUG",
+      "value": "true",
+      "slotSetting": false
+    },
+    {
+      "name": "APP_URL",
+      "value": "api-react-laravel-azure.azurewebsites.net",
+      "slotSetting": false
+    },
+    {
+      "name": "LOG_CHANNEL",
+      "value": "stack",
+      "slotSetting": false
+    },
+    {
+      "name": "LOG_DEPRECATIONS_CHANNEL",
+      "value": "null",
+      "slotSetting": false
+    },
+    {
+      "name": "LOG_LEVEL",
+      "value": "debug",
+      "slotSetting": false
+    },
+    {
+      "name": "DB_CONNECTION",
+      "value": "mysql",
+      "slotSetting": false
+    },
+    {
+      "name": "DB_HOST",
+      "value": "react-laravel-azure-srv-db.mysql.database.azure.com",
+      "slotSetting": false
+    },
+    {
+      "name": "DB_PORT",
+      "value": "3306",
+      "slotSetting": false
+    },
+    {
+      "name": "DB_DATABASE",
+      "value": "react-laravel-azure",
+      "slotSetting": false
+    },
+    {
+      "name": "DB_USERNAME",
+      "value": "reactlaravelazureroot",
+      "slotSetting": false
+    },
+    {
+      "name": "DB_PASSWORD",
+      "value": "root@2023",
+      "slotSetting": false
+    }
+  ]
+  
